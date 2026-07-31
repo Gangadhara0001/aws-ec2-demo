@@ -15,4 +15,9 @@ public class HomeController {
     public String health() {
         return "Application is Running";
     }
+
+    @GetMapping("/name")
+    public String name() {
+        return "Application is Running";
+    }
 }
