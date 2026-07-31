@@ -63,10 +63,17 @@ jobs:
 
             docker pull ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:latest
 
+            # Stop old systemd service if it exists
+            sudo systemctl stop aws-ec2-demo || true
+            sudo systemctl disable aws-ec2-demo || true
+      
+            # Remove old Docker container
             docker stop aws-demo || true
-            docker rm aws-demo || true
-
+            docker rm -f aws-demo || true
+      
+            # Start new container
             docker run -d \
-              --name aws-demo \
-              -p 8080:8080 \
-              ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:latest
+            --name aws-demo \
+            -p 8080:8080 \
+            --restart unless-stopped \
+            ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:latest
