@@ -18,6 +18,6 @@ public class HomeController {
 
     @GetMapping("/name")
     public String name() {
-        return "Application is Running";
+        return "Gangadhara A B";
     }
 }
